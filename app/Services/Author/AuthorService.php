@@ -5,6 +5,7 @@ namespace App\Services\Author;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use App\Http\Resources\Author\AuthorResource;
 use App\Repositories\Author\AuthorRepositoryInterface;
 
 class AuthorService
@@ -19,8 +20,11 @@ class AuthorService
         $this->repository = $repository;
     }
 
-    public function all(Request $request): Collection{
-        return $this->repository->all($request);
+    public function all(Request $request): Collection
+    {
+        $resource = AuthorResource::collection($this->repository->all($request));
+
+        return new Collection($resource->toArray($request));
     }
 
     public function create(array $params): Model
