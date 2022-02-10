@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Author;
 
 use Exception;
 use App\Models\Author;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\Author\AuthorService;
@@ -54,12 +55,21 @@ class AuthorController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param Author $author
+     * @param int $id
      * @return JsonResponse
      */
-    public function show(Author $author): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        return response()->json($author);
+        try {
+            $author = Author::findOrFail($id);
+
+            return response()->json($author);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => "No se encontró información del autor.",
+                'code' => Response::HTTP_NOT_FOUND
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
