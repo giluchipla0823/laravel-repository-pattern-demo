@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Exception;
 use App\Helpers\ApiHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
@@ -33,45 +34,6 @@ trait ApiResponse
     }
 
     /**
-     * Crear formato de respuesta JSON para lista de datos.
-     *
-     * @param Collection $data
-     * @return JsonResponse
-     */
-    protected function showAll(Collection $data): JsonResponse
-    {
-        if ($data->isEmpty()) {
-            return $this->successResponse([]);
-        }
-
-        if (QueryParamsHelper::checkIncludeParamDatatables()) {
-            return $this->successResponse(
-                null,
-                ApiHelper::MSG_SUCCESSFUL_OPERATION,
-                Response::HTTP_OK,
-                $data->toArray()
-            );
-        }
-
-        $data = $this->transformCollection($data);
-
-        return $this->successResponse($data);
-    }
-
-    /**
-     * Crear formato de respuesta JSON para modelos.
-     *
-     * @param Model|null $instance
-     * @return JsonResponse
-     */
-    protected function showOne(?Model $instance): JsonResponse
-    {
-        $result = $this->transformInstance($instance);
-
-        return $this->successResponse($result);
-    }
-
-    /**
      * Crear formato de respuesta JSON para escenarios de error.
      *
      * @param string $message
@@ -97,6 +59,46 @@ trait ApiResponse
     }
 
     /**
+     * Crear formato de respuesta JSON para cuando se usa "Collections".
+     *
+     * @param Collection $data
+     * @return JsonResponse
+     * @throws Exception
+     */
+    protected function showAll(Collection $data): JsonResponse
+    {
+        if ($data->isEmpty()) {
+            return $this->successResponse([]);
+        }
+
+        if (QueryParamsHelper::checkIncludeParamDatatables()) {
+            return $this->successResponse(
+                null,
+                ApiHelper::MSG_SUCCESSFUL_OPERATION,
+                Response::HTTP_OK,
+                $data->toArray()
+            );
+        }
+
+        $data = $this->transformCollection($data);
+
+        return $this->successResponse($data);
+    }
+
+    /**
+     * Crear formato de respuesta JSON para cuando se recibe un "Eloquent Model".
+     *
+     * @param Model|null $instance
+     * @return JsonResponse
+     */
+    protected function showOne(?Model $instance): JsonResponse
+    {
+        $result = $this->transformInstance($instance);
+
+        return $this->successResponse($result);
+    }
+
+    /**
      * Retorna en formato JSON la estructura de respuestas definida para la API.
      *
      * @param array|object|null $data
@@ -105,7 +107,7 @@ trait ApiResponse
      * @param array $extras
      * @return JsonResponse
      */
-    protected function makeResponse($data, string $message, int $code, array $extras = []): JsonResponse
+    private function makeResponse($data, string $message, int $code, array $extras = []): JsonResponse
     {
         $response = ApiHelper::response($data, $message, $code, $extras);
 
