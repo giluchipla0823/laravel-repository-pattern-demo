@@ -3,12 +3,11 @@
 namespace App\Traits;
 
 use App\Helpers\ApiHelper;
-use App\Helpers\QueryParamsHelper;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use App\Helpers\QueryParamsHelper;
+use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 trait ApiResponse
 {
