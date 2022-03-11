@@ -3,11 +3,17 @@
 namespace App\Traits;
 
 use App\Helpers\ApiHelper;
+use App\Helpers\QueryParamsHelper;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 trait ApiResponse
 {
+    use TransformResourceResponse;
+
     /**
      * Crear formato de respuesta JSON para escenarios de éxito.
      *
@@ -25,6 +31,45 @@ trait ApiResponse
     ): JsonResponse
     {
         return $this->makeResponse($data, $message, $code, $extras);
+    }
+
+    /**
+     * Crear formato de respuesta JSON para lista de datos.
+     *
+     * @param Collection $data
+     * @return JsonResponse
+     */
+    protected function showAll(Collection $data): JsonResponse
+    {
+        if ($data->isEmpty()) {
+            return $this->successResponse([]);
+        }
+
+        if (QueryParamsHelper::checkIncludeParamDatatables()) {
+            return $this->successResponse(
+                null,
+                ApiHelper::MSG_SUCCESSFUL_OPERATION,
+                Response::HTTP_OK,
+                $data->toArray()
+            );
+        }
+
+        $data = $this->transformCollection($data);
+
+        return $this->successResponse($data);
+    }
+
+    /**
+     * Crear formato de respuesta JSON para modelos.
+     *
+     * @param Model|null $instance
+     * @return JsonResponse
+     */
+    protected function showOne(?Model $instance): JsonResponse
+    {
+        $result = $this->transformInstance($instance);
+
+        return $this->successResponse($result);
     }
 
     /**

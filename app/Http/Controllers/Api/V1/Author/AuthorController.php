@@ -35,7 +35,7 @@ class AuthorController extends ApiController
     public function index(Request $request): JsonResponse {
         $authors = $this->authorService->all($request);
 
-        return $this->successResponse($authors);
+        return $this->showAll($authors);
     }
 
     /**
@@ -46,9 +46,9 @@ class AuthorController extends ApiController
      */
     public function store(AuthorStoreRequest $request): JsonResponse
     {
-        $this->authorService->create($request->all());
+        $author = $this->authorService->create($request->all());
 
-        return $this->showMessage('Author created successfully.', Response::HTTP_CREATED);
+        return $this->successResponse($author, 'Author created successfully.', Response::HTTP_CREATED);
     }
 
     /**
@@ -59,7 +59,7 @@ class AuthorController extends ApiController
      */
     public function show(Author $author): JsonResponse
     {
-        return $this->successResponse($author);
+        return $this->showOne($author);
     }
 
     /**
@@ -71,9 +71,9 @@ class AuthorController extends ApiController
      */
     public function update(AuthorUpdateRequest $request, Author $author): JsonResponse
     {
-        $this->authorService->update($request->all(), $author->id);
+        $author = $this->authorService->update($request->all(), $author->id);
 
-        return $this->showMessage('Author updated successfully.');
+        return $this->successResponse($author, 'Author updated successfully.');
     }
 
     /**

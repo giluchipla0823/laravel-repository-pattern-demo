@@ -1,0 +1,4 @@
+# Datatables package
+https://datatables.yajrabox.com/starter
+
+php artisan vendor:publish --provider="Yajra\DataTables\DataTablesServiceProvider"

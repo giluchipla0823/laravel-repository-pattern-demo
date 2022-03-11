@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\Author\AuthorResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,6 +17,8 @@ class Author extends Model
     protected $fillable = [
         'name'
     ];
+
+    public $transformer = AuthorResource::class;
 
     /**
      * @return HasMany

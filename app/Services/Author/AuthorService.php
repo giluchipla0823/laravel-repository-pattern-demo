@@ -2,9 +2,12 @@
 
 namespace App\Services\Author;
 
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Author;
+use Illuminate\Database\Eloquent\Casts\ArrayObject;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use App\Helpers\QueryParamsHelper;
 use App\Http\Resources\Author\AuthorResource;
 use App\Repositories\Author\AuthorRepositoryInterface;
 
@@ -20,37 +23,53 @@ class AuthorService
         $this->repository = $repository;
     }
 
-//    public function all(Request $request): Collection
-//    {
-//        $resource = AuthorResource::collection($this->repository->all($request));
-//
-//        return new Collection($resource->toArray($request));
-//    }
-
-    public function all(Request $request): array
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function all(Request $request)
     {
-        $results = $this->repository->all($request);
-
-        $resource = AuthorResource::collection($results);
-
-        return $resource->toArray($request);
+        return $this->repository->all($request);
     }
 
-    public function create(array $params): Model
+    public function findById(int $id): array {
+        return $this->repository->find($id);
+    }
+
+    /**
+     * @param array $params
+     * @return Author
+     */
+    public function create(array $params): Author
     {
         return $this->repository->create($params);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function delete(int $id)
     {
         return $this->repository->delete($id);
     }
 
-    public function update(array $params, int $id): ?int
+    /**
+     * @param array $params
+     * @param int $id
+     * @return Author
+     */
+    public function update(array $params, int $id): Author
     {
-        return $this->repository->update($params, $id);
+        $this->repository->update($params, $id);
+
+        return $this->findById($id);
     }
 
+    /**
+     * @param int $id
+     * @return bool|null
+     */
     public function restore(int $id)
     {
         return $this->repository->restore($id);
