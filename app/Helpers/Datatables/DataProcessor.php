@@ -2,16 +2,19 @@
 
 namespace App\Helpers\Datatables;
 
-use App\Traits\TransformResourceResponse;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\TransformResourceResponse;
 use Yajra\DataTables\Processors\DataProcessor as YajraDataProcessor;
 
 class DataProcessor extends YajraDataProcessor
 {
-
     use TransformResourceResponse;
 
-    public function processing($transform = false)
+    /**
+     * @param bool $transform
+     * @return array
+     */
+    public function processing(bool $transform = false): array
     {
         $this->output = [];
 

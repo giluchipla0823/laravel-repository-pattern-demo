@@ -7,11 +7,10 @@ use Yajra\DataTables\EloquentDataTable as YajraEloquentDataTable;
 class EloquentDataTable extends YajraEloquentDataTable
 {
     /**
-     * @param $mDataSupport
-     * @return array|\Illuminate\Http\JsonResponse
-     * @throws \Yajra\DataTables\Exceptions\Exception
+     * @param bool $transform
+     * @return array
      */
-    public function response($transform = false)
+    public function response(bool $transform = false): array
     {
         try {
             $this->prepareQuery();
@@ -28,10 +27,10 @@ class EloquentDataTable extends YajraEloquentDataTable
 
     /**
      * @param $results
-     * @param boolean $transform
+     * @param bool $transform
      * @return array
      */
-    protected function processingResults($results, $transform = false)
+    protected function processingResults($results, bool $transform = false): array
     {
         $processor = new DataProcessor(
             $results,
@@ -49,7 +48,7 @@ class EloquentDataTable extends YajraEloquentDataTable
      * @param  array  $data
      * @return array
      */
-    protected function render(array $data)
+    protected function render(array $data): array
     {
         $output = $this->attachAppends([
             'draw'            => (int) $this->request->input('draw'),
