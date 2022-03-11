@@ -2,11 +2,11 @@
 
 namespace App\Traits;
 
+use Exception;
 use App\Helpers\DatatablesHelper;
-use App\Helpers\QueryParamsHelper;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Collection;
 
 trait TransformResourceResponse
 {
@@ -20,15 +20,8 @@ trait TransformResourceResponse
         $instance = $data->first();
 
         $transformer = $instance->transformer;
-        $result = $this->getTransformDataFromResource($data, $transformer);
 
-//        if (!QueryParamsHelper::includeParamDatatables()) {
-//            return $result;
-//        }
-
-        return $result;
-
-        // return DatatablesHelper::response($result);
+        return $this->getTransformDataFromResource($data, $transformer);
     }
 
 
