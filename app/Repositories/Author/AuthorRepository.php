@@ -17,6 +17,10 @@ class AuthorRepository extends BaseRepository implements AuthorRepositoryInterfa
         parent::__construct($author);
     }
 
+    /**
+     * @param Request $request
+     * @return Collection
+     */
     public function all(Request $request): Collection
     {
         $query = $this->model->query();
@@ -24,6 +28,8 @@ class AuthorRepository extends BaseRepository implements AuthorRepositoryInterfa
         if($request->has('name')){
             $query = $query->where('name', 'LIKE', "%" . $request->get('name') . "%");
         }
+
+        $query->with(QueryParamsHelper::getIncludesParamFromRequest());
 
         if (QueryParamsHelper::checkIncludeParamDatatables()) {
             $result = Datatables::customizable($query)->response();

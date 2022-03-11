@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Exception;
 use App\Helpers\DatatablesHelper;
+use App\Helpers\QueryParamsHelper;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,15 +28,17 @@ trait TransformResourceResponse
 
     /**
      * @param Model|null $instance
-     * @return array
+     * @return array|object
      */
-    protected function transformInstance(?Model $instance): array
+    protected function transformInstance(?Model $instance)
     {
         if (!$instance) {
-            return [];
+            return $instance;
         }
 
         $transformer = $instance->transformer;
+
+        $instance->load(QueryParamsHelper::getIncludesParamFromRequest());
 
         return $this->getTransformDataFromResource($instance, $transformer);
     }

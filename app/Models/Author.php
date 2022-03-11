@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use App\Http\Resources\Author\AuthorResource;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Author extends Model
+class Author extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
