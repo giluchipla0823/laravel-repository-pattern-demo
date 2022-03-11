@@ -107,7 +107,7 @@ trait ApiResponse
      * @param array $extras
      * @return JsonResponse
      */
-    private function makeResponse($data, string $message, int $code, array $extras = []): JsonResponse
+    protected function makeResponse($data, string $message, int $code, array $extras = []): JsonResponse
     {
         $response = ApiHelper::response($data, $message, $code, $extras);
 
