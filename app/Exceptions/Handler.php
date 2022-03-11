@@ -3,20 +3,24 @@
 namespace App\Exceptions;
 
 use Throwable;
+use App\Helpers\ApiHelper;
+use App\Traits\ApiResponse;
 use App\Helpers\ValidationHelper;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponse;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -49,6 +53,12 @@ class Handler extends ExceptionHandler
         });
     }
 
+    /**
+     * @param $request
+     * @param Throwable $e
+     * @return JsonResponse|\Illuminate\Http\Response|Response
+     * @throws Throwable
+     */
     public function render($request, Throwable $e)
     {
         if (config('app.debug')) {
@@ -67,7 +77,7 @@ class Handler extends ExceptionHandler
             $modelName = strtolower(class_basename($e->getModel()));
 
             return $this->errorResponse(
-                sprintf("There is no instance of %s with the specified id", $modelName),
+                sprintf("There is no instance of %s with the specified id.", $modelName),
                 Response::HTTP_NOT_FOUND
             );
         }
@@ -118,7 +128,7 @@ class Handler extends ExceptionHandler
         return $this->errorResponse(
             'Validation failed.',
             Response::HTTP_UNPROCESSABLE_ENTITY,
-            ['errors' => $errors]
+            [ApiHelper::IDX_STR_JSON_ERRORS => $errors]
         );
     }
 
@@ -129,12 +139,5 @@ class Handler extends ExceptionHandler
     private function isFrontend($request): bool
     {
         return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
-    }
-
-    protected function errorResponse(string $message, int $code, array $extras = []): JsonResponse
-    {
-        $response = array_merge(['message' => $message, 'code' => $code], $extras);
-
-        return response()->json($response, $code);
     }
 }

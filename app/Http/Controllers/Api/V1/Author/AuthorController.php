@@ -35,7 +35,7 @@ class AuthorController extends ApiController
     public function index(Request $request): JsonResponse {
         $authors = $this->authorService->all($request);
 
-        return response()->json($authors);
+        return $this->successResponse($authors);
     }
 
     /**
@@ -48,7 +48,7 @@ class AuthorController extends ApiController
     {
         $this->authorService->create($request->all());
 
-        return response()->json(['message' => 'Author created successfully.'], Response::HTTP_CREATED);
+        return $this->showMessage('Author created successfully.', Response::HTTP_CREATED);
     }
 
     /**
@@ -59,7 +59,7 @@ class AuthorController extends ApiController
      */
     public function show(Author $author): JsonResponse
     {
-        return response()->json($author);
+        return $this->successResponse($author);
     }
 
     /**
@@ -73,7 +73,7 @@ class AuthorController extends ApiController
     {
         $this->authorService->update($request->all(), $author->id);
 
-        return response()->json(['message' => 'Author updated successfully.']);
+        return $this->showMessage('Author updated successfully.');
     }
 
     /**
@@ -86,7 +86,7 @@ class AuthorController extends ApiController
     {
         $this->authorService->delete($author->id);
 
-        return response()->json(['message' => 'Author removed successfully.'], Response::HTTP_NO_CONTENT);
+        return $this->showMessage('Author removed successfully.', Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -99,8 +99,6 @@ class AuthorController extends ApiController
     {
         $this->authorService->restore($id);
 
-        return response()->json(['message' => 'Author restored successfully.']);
+        return $this->showMessage('Author restored successfully.');
     }
-
-
 }

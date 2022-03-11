@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Services\Auth\AuthService;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Services\Auth\AuthService;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends ApiController
@@ -32,7 +32,7 @@ class AuthController extends ApiController
     public function login(LoginRequest $request): JsonResponse {
         $response = $this->authService->login($request->all());
 
-        return response()->json($response);
+        return $this->successResponse($response);
     }
 
     /**
@@ -43,7 +43,7 @@ class AuthController extends ApiController
     {
         $response = $this->authService->register($request->all());
 
-        return response()->json($response, Response::HTTP_CREATED);
+        return $this->successResponse($response, Response::HTTP_CREATED);
     }
 
     /**
@@ -54,7 +54,7 @@ class AuthController extends ApiController
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Se ha cerrado la sesión del usuario.']);
+        return $this->showMessage('Se ha cerrado la sesión del usuario.');
     }
 
 
