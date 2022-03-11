@@ -20,11 +20,20 @@ class AuthorService
         $this->repository = $repository;
     }
 
-    public function all(Request $request): Collection
-    {
-        $resource = AuthorResource::collection($this->repository->all($request));
+//    public function all(Request $request): Collection
+//    {
+//        $resource = AuthorResource::collection($this->repository->all($request));
+//
+//        return new Collection($resource->toArray($request));
+//    }
 
-        return new Collection($resource->toArray($request));
+    public function all(Request $request): array
+    {
+        $results = $this->repository->all($request);
+
+        $resource = AuthorResource::collection($results);
+
+        return $resource->toArray($request);
     }
 
     public function create(array $params): Model
