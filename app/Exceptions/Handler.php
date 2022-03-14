@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Throwable;
 use App\Helpers\ApiHelper;
 use App\Traits\ApiResponse;
@@ -67,6 +68,10 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof ValidationException) {
             return $this->convertValidationExceptionToResponse($e, $request);
+        }
+
+        if ($e instanceof AuthenticationException) {
+            return $this->errorResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
         if ($e instanceof AuthorizationException) {
