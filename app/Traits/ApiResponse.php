@@ -17,7 +17,7 @@ trait ApiResponse
     /**
      * Crear formato de respuesta JSON para escenarios de éxito.
      *
-     * @param array|object|null $data
+     * @param array|object $data
      * @param string $message
      * @param int $code
      * @param array $extras
