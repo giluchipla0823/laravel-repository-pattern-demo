@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Author;
 
 use Exception;
 use App\Models\Author;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\Author\AuthorService;
