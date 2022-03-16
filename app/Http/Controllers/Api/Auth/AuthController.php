@@ -9,6 +9,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends ApiController
@@ -111,7 +112,11 @@ class AuthController extends ApiController
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        if(method_exists($request->user()->currentAccessToken(), 'delete')) {
+            $request->user()->currentAccessToken()->delete();
+        } else {
+            auth()->guard('web')->logout();
+        }
 
         return $this->showMessage('Se ha cerrado la sesión del usuario.');
     }

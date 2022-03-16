@@ -28,7 +28,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('logout', [AuthController::class, 'logout']);
 });
 
-Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'v1'], function() {
+// Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'v1'], function() {
+Route::group(['prefix' => 'v1'], function() {
 
     // Author
     Route::patch('/authors/{id}', [AuthorController::class, 'restore'])->name('authors.restore');
