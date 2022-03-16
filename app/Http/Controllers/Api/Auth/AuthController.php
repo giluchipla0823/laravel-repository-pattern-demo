@@ -25,6 +25,30 @@ class AuthController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *     path="/api/login",
+     *     tags={"Auth"},
+     *     summary="Iniciar sesión",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/LoginRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/LoginSuccessResponse")
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Validation failed.",
+     *         @OA\JsonContent(ref="#/components/schemas/LoginUnprocessableEntityResponse")
+     *     ),
+     *     @OA\Response(
+     *         response="400",
+     *         description="Incorrect access credentials.",
+     *         @OA\JsonContent(ref="#/components/schemas/LoginBadRequestResponse")
+     *     )
+     * )
      * @param LoginRequest $request
      * @return JsonResponse
      * @throws AuthenticationException
@@ -36,6 +60,25 @@ class AuthController extends ApiController
     }
 
     /**
+     * @OA\Post(
+     *     path="/api/register",
+     *     tags={"Auth"},
+     *     summary="Registrar usuario",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/RegisterRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/RegisterSuccessResponse")
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Validation failed.",
+     *         @OA\JsonContent(ref="#/components/schemas/RegisterUnprocessableEntityResponse")
+     *     )
+     * )
      * @param RegisterRequest $request
      * @return JsonResponse
      */
@@ -47,6 +90,22 @@ class AuthController extends ApiController
     }
 
     /**
+     * @OA\Get (
+     *     path="/api/logout",
+     *     tags={"Auth"},
+     *     summary="Cerrar sesión",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/LogoutSuccessResponse")
+     *     ),
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized.",
+     *         @OA\JsonContent(ref="#/components/schemas/UnauthorizedResponse")
+     *     ),
+     *     security={{"sanctum": {}}},
+     * )
      * @param Request $request
      * @return JsonResponse
      */

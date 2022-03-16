@@ -1,0 +1,490 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API BookStore",
+        "description": "",
+        "contact": {
+            "email": "admin@admin.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "API BookStore"
+        }
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Iniciar sesión",
+                "operationId": "ea134134deae11eb974c719450ef8a02",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginSuccessResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginUnprocessableEntityResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Incorrect access credentials.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginBadRequestResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Registrar usuario",
+                "operationId": "58fe5a217ef88ae75e9b530a5e5817d1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegisterSuccessResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegisterUnprocessableEntityResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Cerrar sesión",
+                "operationId": "c360108c781c536eb6f37967647d1fa3",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LogoutSuccessResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnauthorizedResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "JsonApiDefinition": {
+                "title": "JsonApiDefinition",
+                "description": "JsonApiDefinition",
+                "properties": {
+                    "environment": {
+                        "type": "string",
+                        "example": "local"
+                    },
+                    "version": {
+                        "type": "string",
+                        "example": "1.0.0"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Bookstore Api"
+                    },
+                    "summary": {
+                        "type": "string",
+                        "example": "Api for obtain information about books, authors, publishers and genres."
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "JsonApiDefinition"
+                }
+            },
+            "ValidationErrorsDefinition": {
+                "title": "ValidationErrorsDefinition",
+                "description": "ValidationErrorsDefinition",
+                "properties": {
+                    "field": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": ""
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "ValidationErrorsDefinition"
+                }
+            },
+            "LoginRequest": {
+                "title": "Login Request",
+                "description": "Login request body data",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "title": "email",
+                        "description": "Email of the user",
+                        "type": "email",
+                        "example": "example@gmail.com"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "Password of the user",
+                        "type": "string",
+                        "example": "secret"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "LoginRequest"
+                }
+            },
+            "RegisterRequest": {
+                "title": "Register Request",
+                "description": "Register request body data",
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "confirm_password"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Name of the user",
+                        "type": "string",
+                        "example": "Test"
+                    },
+                    "email": {
+                        "description": "Email of the user",
+                        "type": "email",
+                        "example": "example@gmail.com"
+                    },
+                    "password": {
+                        "description": "Password of the user",
+                        "type": "string",
+                        "example": "secret"
+                    },
+                    "confirm_password": {
+                        "description": "Confirm Password of the user",
+                        "type": "string",
+                        "example": "secret"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "RegisterRequest"
+                }
+            },
+            "LoginBadRequestResponse": {
+                "title": "LoginBadRequestResponse",
+                "description": "LoginBadRequestResponse",
+                "properties": {
+                    "jsonapi": {
+                        "$ref": "#/components/schemas/JsonApiDefinition"
+                    },
+                    "code": {
+                        "type": "integer",
+                        "example": 400
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Incorrect access credentials."
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "LoginBadRequestResponse"
+                }
+            },
+            "LoginSuccessResponse": {
+                "title": "LoginSuccessResponse",
+                "description": "LoginSuccessResponse",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "example": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Successful operation."
+                    },
+                    "jsonapi": {
+                        "$ref": "#/components/schemas/JsonApiDefinition"
+                    },
+                    "data": {
+                        "type": "object",
+                        "example": {
+                            "id": 1,
+                            "name": "Test",
+                            "email": "example@gmail.com",
+                            "token": "11|5q36HxnTRbxPLIROxnB7oxK0xMSrhmHw32g9jeem"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "LoginSuccessResponse"
+                }
+            },
+            "LoginUnprocessableEntityResponse": {
+                "title": "LoginUnprocessableEntityResponse",
+                "description": "LoginUnprocessableEntityResponse",
+                "xml": {
+                    "name": "LoginUnprocessableEntityResponse"
+                },
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/UnprocessableEntityResponse"
+                    },
+                    {
+                        "properties": {
+                            "errors": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/ValidationErrorsDefinition"
+                                },
+                                "example": [
+                                    {
+                                        "field": "email",
+                                        "message": "Campo requerido."
+                                    },
+                                    {
+                                        "field": "password",
+                                        "message": "Campo requerido."
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "LogoutSuccessResponse": {
+                "title": "LogoutSuccessResponse",
+                "description": "LogoutSuccessResponse",
+                "properties": {
+                    "jsonapi": {
+                        "$ref": "#/components/schemas/JsonApiDefinition"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Se ha cerrado la sesión del usuario."
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "LogoutSuccessResponse"
+                }
+            },
+            "RegisterSuccessResponse": {
+                "title": "RegisterSuccessResponse",
+                "description": "RegisterSuccessResponse",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "example": 201
+                    },
+                    "jsonapi": {
+                        "$ref": "#/components/schemas/JsonApiDefinition"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "User created successfully."
+                    },
+                    "data": {
+                        "type": "object",
+                        "example": {
+                            "id": 1,
+                            "name": "Test",
+                            "email": "example@gmail.com",
+                            "token": "11|5q36HxnTRbxPLIROxnB7oxK0xMSrhmHw32g9jeem"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "RegisterSuccessResponse"
+                }
+            },
+            "RegisterUnprocessableEntityResponse": {
+                "title": "RegisterUnprocessableEntityResponse",
+                "description": "RegisterUnprocessableEntityResponse",
+                "xml": {
+                    "name": "RegisterUnprocessableEntityResponse"
+                },
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/UnprocessableEntityResponse"
+                    },
+                    {
+                        "properties": {
+                            "errors": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/ValidationErrorsDefinition"
+                                },
+                                "example": [
+                                    {
+                                        "field": "name",
+                                        "message": "Campo requerido."
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Campo requerido."
+                                    },
+                                    {
+                                        "field": "password",
+                                        "message": "Campo requerido."
+                                    },
+                                    {
+                                        "field": "confirm_password",
+                                        "message": "Campo requerido."
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "UnauthorizedResponse": {
+                "title": "UnauthorizedResponse",
+                "description": "Unauthorized response",
+                "properties": {
+                    "jsonapi": {
+                        "$ref": "#/components/schemas/JsonApiDefinition"
+                    },
+                    "code": {
+                        "type": "integer",
+                        "example": "401"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Unauthorized."
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "UnauthorizedResponse"
+                }
+            },
+            "UnprocessableEntityResponse": {
+                "title": "UnprocessableEntityResponse",
+                "description": "UnprocessableEntityResponse",
+                "properties": {
+                    "jsonapi": {
+                        "$ref": "#/components/schemas/JsonApiDefinition"
+                    },
+                    "code": {
+                        "type": "integer",
+                        "example": "422"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Validation failed."
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "UnprocessableEntityResponse"
+                }
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Laravel Sanctum token authentication",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "API Endpoints of Auth"
+        }
+    ],
+    "security": [
+        []
+    ]
+}

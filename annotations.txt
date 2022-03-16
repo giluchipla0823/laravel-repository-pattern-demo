@@ -2,3 +2,7 @@
 https://datatables.yajrabox.com/starter
 
 php artisan vendor:publish --provider="Yajra\DataTables\DataTablesServiceProvider"
+
+
+# Swagger
+https://github.com/LaravelDaily/Laravel-OpenAPI-Swagger-Documentation-Example

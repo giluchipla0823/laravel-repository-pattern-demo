@@ -181,6 +181,9 @@ return [
         // Datatables
         Yajra\Datatables\DatatablesServiceProvider::class,
 
+        // Swagger
+        L5Swagger\L5SwaggerServiceProvider::class,
+
     ],
 
     /*
