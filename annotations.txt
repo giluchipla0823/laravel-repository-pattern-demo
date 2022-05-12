@@ -6,3 +6,8 @@ php artisan vendor:publish --provider="Yajra\DataTables\DataTablesServiceProvide
 
 # Swagger
 https://github.com/LaravelDaily/Laravel-OpenAPI-Swagger-Documentation-Example
+
+https://blog.quickadminpanel.com/laravel-api-documentation-with-openapiswagger/
+
+
+https://github.com/LaravelDaily/Laravel-OpenAPI-Swagger-Documentation-Example/blob/master/app/Http/Controllers/Api/V1/Admin/ProjectsApiController.php
